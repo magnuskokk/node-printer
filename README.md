@@ -1,16 +1,20 @@
-node-printer-lp
+node-printer-lp-complete
 ===============
 
-armetiz/node-printer-lp fork for fixing multiple printer functionality
-
 A tool to print document or data. Based on "lp" binary.
+
+Supports complete set of lp options (http://unixhelp.ed.ac.uk/CGI/man-cgi?lp)
+
+Based on Thomas Tourlourat armetiz/node-printer-lp, live long and prosper.
 
 ## Quick Examples
 
 ```js
 var printer = require ("printer-lp");
 var options = {
-    destination: "EPSON_SX510",
+    media: 'Custom.200x600mm', // Custom paper size
+    destination: "EPSON_SX510", // The printer name
+    n: 3 // Number of copies
 };
 
 var text = "package.json";

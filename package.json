@@ -1,19 +1,19 @@
 {
-    "name"          : "printer-lp-",
-    "description"   : "Tool to send data to 'lp' binary.",
-    "version"       : "1.0.4",
-    "homepage"      : "http://github.com/diegoalberto/node-printer-lp",
+    "name"          : "node-printer-lp-complete",
+    "description"   : "Tool to send data to 'lp' binary. All lp options are supported.",
+    "version"       : "1.0.1",
+    "homepage"      : "http://github.com/diegoalberto/node-printer-lp-complete",
     "keywords"      : ["printer", "print", "cups", "lp", "job"],
-    "author"        : "Thomas Tourlourat <thomas@tourlourat.com>, Diego Bernal <diegoalberto@gmail.com>",
+    "author"        : "Diego B. <diegoalberto@gmail.com>",
     "main"          : "./printer",
     "bugs" :
     {
         "mail" : "",
-        "url" : "http://github.com/armetiz/node-printer-lp/issues"
+        "url" : "http://github.com/diegoalberto/node-printer-lp-complete/issues"
     },
     "repository": {
         "type": "git",
-        "url": "http://github.com/armetiz/node-printer-lp.git"
+        "url": "https://github.com/diegoalberto/node-printer-lp-complete.git"
     },
     "engines" : {
         "node" : ">=0.8.8"
@@ -24,7 +24,7 @@
     "licenses" :
     [ {
         "type" : "MIT", 
-        "url" : "http://github.com/armetiz/node-printer-lp/raw/master/LICENSE"
+        "url" : "http://github.com/diegoalberto/node-printer-lp-complete/raw/master/LICENSE"
     }
     ]
 }
