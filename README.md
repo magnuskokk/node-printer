@@ -10,7 +10,7 @@ Based on Thomas Tourlourat armetiz/node-printer-lp, live long and prosper.
 ## Quick Examples
 
 ```js
-var printer = require ("printer-lp");
+var printer = require ("node-printer-lp-complete");
 var options = {
     media: 'Custom.200x600mm', // Custom paper size
     destination: "EPSON_SX510", // The printer name
