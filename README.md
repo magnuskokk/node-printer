@@ -17,7 +17,7 @@ var options = {
     n: 3 // Number of copies
 };
 
-var text = "package.json";
+var text = "print text directly, when needed: e.g. barcode printers";
 var file = "package.json";
 
 var jobText = printer.printText(text, options, "text_demo");
