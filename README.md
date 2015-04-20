@@ -1,7 +1,7 @@
 node-printer-lp
 ===============
 
-**This repository is not maintained any more.**
+armetiz/node-printer-lp fork for fixing multiple printer functionality
 
 A tool to print document or data. Based on "lp" binary.
 
