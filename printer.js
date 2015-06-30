@@ -277,7 +277,7 @@ module.exports.printFile = function (file, options, identifier) {
 };
 
 module.exports.printBuffer = function(data, options, identifier) {
-    // var args = buildArgs(options);
+    var args = '';
 
     var lp = spawn("lp", args);
 
