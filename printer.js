@@ -248,14 +248,15 @@ var argsFactory = function(options) {
 
     });
     return args;
-}
+};
+
+var buildArgs = function(options) {
+    options = optionsFactory(options);
+    return argsFactory(options);
+};
 
 module.exports.printText = function (text, options, identifier) {
-
-    options = optionsFactory(options);
-
-    var args = argsFactory(options);
-
+    var args = buildArgs(options);
     var lp = spawn("lp", args);
 
     lp.stdin.write(text);
@@ -265,14 +266,23 @@ module.exports.printText = function (text, options, identifier) {
 }
 
 module.exports.printFile = function (file, options, identifier) {
-    options = optionsFactory(options);
-
-    var args = argsFactory(options);
+    var args = buildArgs(options);
 
     args.push ("--");
     args.push (file);
 
     var lp = spawn("lp", args);
 
+    return new Job(lp, identifier);
+}
+
+module.exports.printBuffer = function(data, options, identifier) {
+    var args = buildArgs(options);
+    
+    var lp = spawn("lp", args);
+
+    lp.stdin.write(data);
+    lp.stdin.end();
+    
     return new Job(lp, identifier);
 }
