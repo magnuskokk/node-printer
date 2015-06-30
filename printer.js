@@ -250,10 +250,13 @@ var argsFactory = function(options) {
     return args;
 };
 
-module.exports.printText = function (text, options, identifier) {
+var buildArgs = function(options) {
     options = optionsFactory(options);
-    var args = argsFactory(options);
+    return argsFactory(options);
+};
 
+module.exports.printText = function (text, options, identifier) {
+    var args = buildArgs(options);
     var lp = spawn("lp", args);
 
     lp.stdin.write(text);
@@ -263,8 +266,7 @@ module.exports.printText = function (text, options, identifier) {
 };
 
 module.exports.printFile = function (file, options, identifier) {
-    options = optionsFactory(options);
-    var args = argsFactory(options);
+    var args = buildArgs(options);
 
     args.push ("--");
     args.push (file);
@@ -275,8 +277,7 @@ module.exports.printFile = function (file, options, identifier) {
 };
 
 module.exports.printBuffer = function(data, options, identifier) {
-    options = optionsFactory(options);
-    var args = argsFactory(options);
+    // var args = buildArgs(options);
 
     var lp = spawn("lp", args);
 
