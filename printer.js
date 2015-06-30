@@ -256,17 +256,20 @@ var buildArgs = function(options) {
 };
 
 module.exports.printText = function (text, options, identifier) {
-    var args = buildArgs(options);
+    options = optionsFactory(options);
+    var args = argsFactory(options);
+
     var lp = spawn("lp", args);
 
     lp.stdin.write(text);
     lp.stdin.end();
 
     return new Job(lp, identifier);
-}
+};
 
 module.exports.printFile = function (file, options, identifier) {
-    var args = buildArgs(options);
+    options = optionsFactory(options);
+    var args = argsFactory(options);
 
     args.push ("--");
     args.push (file);
@@ -274,15 +277,16 @@ module.exports.printFile = function (file, options, identifier) {
     var lp = spawn("lp", args);
 
     return new Job(lp, identifier);
-}
+};
 
 module.exports.printBuffer = function(data, options, identifier) {
-    var args = buildArgs(options);
-    
+    options = optionsFactory(options);
+    var args = argsFactory(options);
+
     var lp = spawn("lp", args);
 
     lp.stdin.write(data);
     lp.stdin.end();
-    
+
     return new Job(lp, identifier);
-}
+};
