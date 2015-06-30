@@ -250,11 +250,6 @@ var argsFactory = function(options) {
     return args;
 };
 
-var buildArgs = function(options) {
-    options = optionsFactory(options);
-    return argsFactory(options);
-};
-
 module.exports.printText = function (text, options, identifier) {
     options = optionsFactory(options);
     var args = argsFactory(options);
