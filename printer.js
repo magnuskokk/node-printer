@@ -251,6 +251,7 @@ var argsFactory = function(options) {
 };
 
 var buildArgs = function(options) {
+    if (!options) return [];
     options = optionsFactory(options);
     return argsFactory(options);
 };
@@ -277,8 +278,7 @@ module.exports.printFile = function (file, options, identifier) {
 };
 
 module.exports.printBuffer = function(data, options, identifier) {
-    var args = '';
-
+    var args = buildArgs(options);
     var lp = spawn("lp", args);
 
     lp.stdin.write(data);
