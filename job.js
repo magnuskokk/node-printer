@@ -1,9 +1,11 @@
 var utils = require('util');
 var events = require('events');
 
-var Job = function (lp, identifier) {
+util.inherits(Job, events.EventEmitter);
 
-    var self = new events.EventEmitter();
+function Job(lp, identifier) {
+
+    var self = this;
     var error;
 
     self.identifier = identifier;
@@ -22,6 +24,6 @@ var Job = function (lp, identifier) {
     });
 
     return self;
-};
+}
 
 module.exports = Job;
