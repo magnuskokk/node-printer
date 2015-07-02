@@ -1,7 +1,7 @@
 var utils = require('util');
 var events = require('events');
 
-util.inherits(Job, events.EventEmitter);
+utils.inherits(Job, events.EventEmitter);
 
 function Job(lp, identifier) {
 
