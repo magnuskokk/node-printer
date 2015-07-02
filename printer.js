@@ -1,6 +1,6 @@
-var Job = require ("./job");
-var spawn = require("child_process").spawn;
-var _ = require ("underscore");
+var Job = require ('./job');
+var spawn = require('child_process').spawn;
+var _ = require ('underscore');
 
 /**
  * Describes the parameter options accepted by lp
@@ -90,7 +90,7 @@ var generalOptions = {
         'expects': 'string'
     }
 
-}
+};
 
 /**
  * Describes the parameter options accepted by lp -o option
@@ -175,7 +175,7 @@ var optionsFactory = function (options) {
     _.each(generalOptions, function(generalOption, generalOptionId) { // for each of lp available options
         _.each(generalOption.options, function(option) { // for each option possible name
             if(typeof options[option] !== 'undefined') { // check of the method options contains the value
-                if(generalOption.expects == '') { // when expects is empty, ommit the options defined value, just add
+                if(generalOption.expects === '') { // when expects is empty, ommit the options defined value, just add
                     if(options[option]) {
                         selGeneralOptions[generalOptionId] = true;
                     }
@@ -196,7 +196,7 @@ var optionsFactory = function (options) {
     _.each(oOptions, function(oOption, oOptionId) { // for each of lp available options
         _.each(oOption.options, function(option) { // for each option possible name
             if(typeof options[option] !== 'undefined') { // check of the method options contains the value
-                if(oOption.expects == '') { // when expects is empty, ommit the options defined value, just add
+                if(oOption.expects === '') { // when expects is empty, ommit the options defined value, just add
                     if(options[option]) {
                         selOOptions[oOptionId] = true;
                     }
@@ -217,7 +217,7 @@ var optionsFactory = function (options) {
     if(!_.isEmpty(selOOptions)) {
         var selOoptionsString = '';
         _.each(selOOptions, function(oOption, oOptionId) {
-            if(oOptions[oOptionId].expects == '') {
+            if(oOptions[oOptionId].expects === '') {
                 if(oOption) {
                     selOoptionsString = selOoptionsString + ' ' + oOptionId;
                 }
@@ -225,10 +225,10 @@ var optionsFactory = function (options) {
                 selOoptionsString = selOoptionsString + ' ' + oOptionId + '=' + oOption;
             }
         });
-        if(typeof selGeneralOptions['o'] == 'string') {
-            selGeneralOptions['o'] = selGeneralOptions['o'] + selOoptionsString;
+        if(typeof selGeneralOptions.o == 'string') {
+            selGeneralOptions.o = selGeneralOptions.o + selOoptionsString;
         } else {
-            selGeneralOptions['o'] = selOoptionsString;
+            selGeneralOptions.o = selOoptionsString;
         }
     }
 
@@ -238,7 +238,7 @@ var optionsFactory = function (options) {
 var argsFactory = function(options) {
     var args = [];
     _.each(options, function(optionValue, optionKey) {
-        if(generalOptions[optionKey].expects == '') {
+        if(generalOptions[optionKey].expects === '') {
             if(optionValue) {
                 args.push('-' + optionKey);
             }
@@ -258,7 +258,7 @@ var buildArgs = function(options) {
 
 module.exports.printText = function (text, options, identifier) {
     var args = buildArgs(options);
-    var lp = spawn("lp", args);
+    var lp = spawn('lp', args);
 
     lp.stdin.write(text);
     lp.stdin.end();
@@ -269,17 +269,17 @@ module.exports.printText = function (text, options, identifier) {
 module.exports.printFile = function (file, options, identifier) {
     var args = buildArgs(options);
 
-    args.push ("--");
+    args.push ('--');
     args.push (file);
 
-    var lp = spawn("lp", args);
+    var lp = spawn('lp', args);
 
     return new Job(lp, identifier);
 };
 
 module.exports.printBuffer = function(data, options, identifier) {
     var args = buildArgs(options);
-    var lp = spawn("lp", args);
+    var lp = spawn('lp', args);
 
     lp.stdin.write(data);
     lp.stdin.end();
