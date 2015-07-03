@@ -265,6 +265,7 @@ module.exports.printText = function (data, options, identifier) {
 
     return new Job(lp, identifier);
 };
+
 module.exports.printBuffer = module.exports.printText;
 
 module.exports.printFile = function (file, options, identifier) {
