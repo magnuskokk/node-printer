@@ -18,7 +18,7 @@ function Job(lp) {
     });
 
     lp.stdout.on('data', function(data) {
-        var matchedId = data.match(/^request id is .*-(\d+)/)[1];
+        var matchedId = data.toString().match(/^request id is .*-(\d+)/)[1];
         if (matchedId) self.identifier = matchedId;
     });
 
@@ -35,7 +35,7 @@ function Job(lp) {
 Job.prototype.getStatus = function() {
     var lpq = spawn('lpq', []);
     lpq.stdout.on('data', function(raw){
-        raw = raw.split('\n');
+        raw = raw.toString().split('\n');
         raw.shift();
         if (raw[0].match(/no entries/)) {
             lpq.stdout.removeAllListeners('data');
