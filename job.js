@@ -33,6 +33,7 @@ function Job(lp) {
 }
 
 Job.prototype.getStatus = function() {
+    var self = this;
     var lpq = spawn('lpq', []);
     lpq.stdout.on('data', function(raw){
         raw = raw.toString().split('\n');
