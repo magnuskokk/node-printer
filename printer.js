@@ -291,6 +291,7 @@ Printer.prototype.watch = function(interval) {
   var args = ['-P', this.name];
   if (interval) args.push('+' + interval);
 
+  console.log(args);
   var lpq = spawn('lpq', args);
 
   lpq.stdout.on('data', function(data) {
