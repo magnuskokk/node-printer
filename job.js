@@ -4,7 +4,7 @@ var spawn = require('child_process').spawn;
 
 utils.inherits(Job, events.EventEmitter);
 
-function Job(lp, printer) {
+function Job(lp) {
 
     var self = this;
     var error;
