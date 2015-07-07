@@ -2,6 +2,7 @@ var Job = require ('./job');
 var spawn = require('child_process').spawn;
 var spawnSync = require('child_process').spawnSync;
 var _ = require ('underscore');
+var utils = require('util');
 var events = require('events');
 utils.inherits(Printer, events.EventEmitter);
 
