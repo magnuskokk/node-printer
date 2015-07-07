@@ -267,6 +267,7 @@ function Printer(name) {
     throw new TypeError(name + ' printer does not exist ; installed printers are ' + Printer.list());
   this.name = name;
   this.jobs = [];
+  this.watch(1);
 }
 
 Printer.list = function() {
@@ -337,7 +338,7 @@ Printer.prototype.printBuffer = function(data, options) {
   var job = new Job(lp);
   job.on('sent', function() {
     self.jobs.push(job);
-  })
+  });
 
   return job;
 };
