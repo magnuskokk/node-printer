@@ -2,6 +2,8 @@ var Job = require ('./job');
 var spawn = require('child_process').spawn;
 var spawnSync = require('child_process').spawnSync;
 var _ = require ('underscore');
+var events = require('events');
+utils.inherits(Printer, events.EventEmitter);
 
 /**
  * Describes the parameter options accepted by lp
@@ -263,11 +265,16 @@ var parseStdout = function(data) {
 };
 
 function Printer(name) {
+  var self = this;
   if (!Printer.match(name))
     throw new TypeError(name + ' printer does not exist ; installed printers are ' + Printer.list());
-  this.name = name;
-  this.jobs = [];
-  this.watch(1);
+  self.name = name;
+  self.jobs = [];
+
+  self.on('watched', function() {
+    self.watch();
+  });
+  self.watch();
 }
 
 Printer.list = function() {
@@ -286,18 +293,15 @@ Printer.match = function(name) {
   }).length);
 };
 
-Printer.prototype.watch = function(interval) {
+Printer.prototype.watch = function() {
   var self = this;
   var args = ['-P', this.name];
-  if (interval) args.push('+' + interval);
 
-  console.log(args);
   var lpq = spawn('lpq', args);
 
   lpq.stdout.on('data', function(data) {
     data = parseStdout(data);
     data.shift(2);
-    console.log(data);
     data = data.map(function(line) {
       line = line.split(/[ ]{2,}/);
       return {
@@ -320,6 +324,7 @@ Printer.prototype.watch = function(interval) {
         job.unqueue();
       }
     });
+    self.emit('watched');
   });
 };
 
