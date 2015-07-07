@@ -256,6 +256,7 @@ var buildArgs = function(options) {
 };
 
 var parseStdout = function(data) {
+  if (!Buffer.isBuffer(data)) return [];
   return data.toString()
     .replace(/\n$/, '')
     .split('\n');
