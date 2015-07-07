@@ -1,5 +1,6 @@
 var Job = require ('./job');
 var spawn = require('child_process').spawn;
+var spawnSync = require('child_process').spawnSync;
 var _ = require ('underscore');
 
 /**
@@ -89,7 +90,6 @@ var generalOptions = {
         'description': 'page-list Specifies which pages to print in the document. The list can  contain a list of numbers and ranges (#-#) separated by commas (e.g. 1,3-5,16).',
         'expects': 'string'
     }
-
 };
 
 /**
@@ -165,7 +165,6 @@ var oOptions = {
         'expects': 'number'
     }
 };
-
 
 var optionsFactory = function (options) {
 
@@ -256,25 +255,107 @@ var buildArgs = function(options) {
     return argsFactory(options);
 };
 
-module.exports.printText = function (data, options, identifier) {
+var parseStdout = function(buffer) {
+    return buffer.toString()
+        .replace(/\n$/, '')
+        .split('\n');
+};
+
+function Printer(name) {
+    if (!Printer.match(name))
+        throw new TypeError(name + ' printer does not exist ; installed printers are ' + Printer.list());
+    this.name = name;
+    this.jobs = [];
+}
+
+Printer.list = function() {
+    return parseStdout(spawnSync('lpstat', ['-p']).stdout)
+        .filter(function(line) {
+            return line.match(/^printer/);
+        })
+        .map(function(printer) {
+            return printer.match(/^printer (\S+)/)[1];
+        });
+};
+
+Printer.match = function(name) {
+    return Boolean(Printer.list().filter(function(printer) {
+        return name === printer;
+    }).length);
+};
+
+Printer.prototype.watch = function(interval) {
+    var self = this;
+    var args = ['-P', this.name];
+    if (interval) args.push('+' + interval);
+
+    var lpq = spawn('lpq', args);
+
+    lpq.stdout.on('data', function(data) {
+        data = parseStdout(data);
+        data.shift(2);
+        data = data.map(function(line) {
+            line = line.split(/[ ]{2,}/);
+            return status = {
+                rank: (line[0] === 'active' ? line[0] : parseInt(line[0].slice(0, -2)),
+                owner: line[1],
+                identifier: parseInt(line[2]),
+                files: line[3],
+                totalSize: line[4]
+            };
+        });
+
+        self.jobs.map(function(job) {
+            var status = data.filter(function(status) {
+                if (status.identifier === job.identifier) return status;
+            })[0];
+
+            if (status) {
+                job.setStatus(status);
+            } else {
+                job.unqueue();
+            }
+        });
+    });
+};
+
+Printer.prototype.findJob = function(jobId) {
+    return this.jobs.filter(function(job) {
+        if (job.identifier === jobId) return job;
+    })[0];
+};
+
+Printer.prototype.printBuffer = function(data, options) {
+    var self = this;
     var args = buildArgs(options);
     var lp = spawn('lp', args);
 
     lp.stdin.write(data);
     lp.stdin.end();
 
-    return new Job(lp, identifier);
+    var job = new Job(lp);
+    job.on('sent', function() {
+        self.jobs.push(job);
+    })
+
+    return job;
 };
 
-module.exports.printBuffer = module.exports.printText;
-
-module.exports.printFile = function (file, options, identifier) {
+Printer.prototype.printFile = function(filePath, options) {
+    var self = this;
     var args = buildArgs(options);
 
-    args.push ('--');
-    args.push (file);
+    args.push('--');
+    args.push(file);
 
     var lp = spawn('lp', args);
 
-    return new Job(lp, identifier);
+    var job = new Job(lp);
+    job.on('sent', function() {
+        self.jobs.push(job);
+    })
+
+    return job;
 };
+
+module.exports = Printer;

@@ -4,27 +4,24 @@ var spawn = require('child_process').spawn;
 
 utils.inherits(Job, events.EventEmitter);
 
-function Job(lp) {
+function Job(lp, printer) {
 
     var self = this;
     var error;
-
-    self.on('status:active', function() {
-        console.log('printing');
-    });
 
     lp.stderr.on('data', function(data) {
         error = data.slice(0, data.length - 1);
     });
 
     lp.stdout.on('data', function(data) {
-        var matchedId = data.toString().match(/^request id is .*-(\d+)/)[1];
-        if (matchedId) self.identifier = matchedId;
+        self.identifier = parseInt(data
+            .toString()
+            .match(/^request id is .*-(\d+)/)[1]);
     });
 
     lp.on('exit', function(code) {
         if (0 === code) {
-            self.emit('end');
+            self.emit('sent');
         }
         else {
             self.emit('error', error);
@@ -32,42 +29,20 @@ function Job(lp) {
     });
 }
 
+Job.prototype.setStatus = function(status) {
+    this.status = status;
+    this.emit('updated', status);
+};
+
 Job.prototype.getStatus = function() {
-    var self = this;
-    var lpq = spawn('lpq', []);
-    lpq.stdout.on('data', function(raw){
-        raw = raw.toString().split('\n');
-        raw.shift();
-        if (raw[0].match(/no entries/)) {
-            lpq.stdout.removeAllListeners('data');
-            self.status = 'inactive';
-            return self.emit('status:inactive');
-        }
+    return this.status;
+};
 
-        raw.shift();
-
-        data = raw.map(function(row) {
-            row = row.split(/[ ]{2,}/);
-            return {
-                rank: (row[0] === 'active' ? row[0] : row[0].slice(0, -2)),
-                owner: row[1],
-                job: row[2],
-                files: row[3],
-                totalSize: row[4]
-            };
-        }).filter(function(row) {
-            return self.identifier == row.job;
-        })[0];
-
-        if (data.length) {
-            self.status = data.rank;
-            self.emit('status:' + data.rank, data);
-        } else {
-            lpq.stdout.removeAllListeners('data');
-            self.status = 'inactive';
-            self.emit('status:inactive');
-        }
-    });
+Job.prototype.unqueue = function() {
+    if (this.status.rank === 'active') {
+        this.status.rank = 'completed';
+        this.emit('completed');
+    }
 };
 
 Job.prototype.cancel = function() {
