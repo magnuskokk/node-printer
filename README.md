@@ -1,7 +1,7 @@
 node-printer
 ===============
 
-[![Code Climate](https://codeclimate.com/repos/559baf31e30ba07def0021a2/badges/e7e70dca527aebbf3186/gpa.svg)](https://codeclimate.com/repos/559baf31e30ba07def0021a2/feed) [![Build Status](https://travis-ci.org/alepee/node-printer.svg?branch=master)](https://travis-ci.org/alepee/node-printer)
+[![Code Climate](https://codeclimate.com/repos/559baf31e30ba07def0021a2/badges/e7e70dca527aebbf3186/gpa.svg)](https://codeclimate.com/repos/559baf31e30ba07def0021a2/feed) [![Build Status](https://travis-ci.org/alepee/node-printer.svg?branch=master)](https://travis-ci.org/alepee/node-printer) [![Test Coverage](https://codeclimate.com/repos/559baf31e30ba07def0021a2/badges/e7e70dca527aebbf3186/coverage.svg)](https://codeclimate.com/repos/559baf31e30ba07def0021a2/coverage)
 
 A tool to print document or data. Based on "lp" binary.   
 Supports complete set of lp options (http://unixhelp.ed.ac.uk/CGI/man-cgi?lp)
