@@ -11,7 +11,7 @@ Based on armetiz/node-printer-lp and diegoalberto/node-printer-lp-complete.
 ## Quick Examples
 
 ```js
-var Printer = require('node-printer-lp-complete');
+var Printer = require('node-printer');
 var options = {
     media: 'Custom.200x600mm',
     n: 3
