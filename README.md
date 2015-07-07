@@ -1,4 +1,4 @@
-node-printer-lp-complete
+node-printer
 ===============
 
 A tool to print document or data. Based on "lp" binary.   
