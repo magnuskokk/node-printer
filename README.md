@@ -44,3 +44,10 @@ jobBuffer.once('sent', function() {
     });
 });
 ```
+
+## Roadmap
+
+- [ ] Rewrite option factories
+- [ ] Remove dependency to underscorejs
+- [ ] Write more tests
+- [ ] Find a way to emulate CUPS printers on Travis env
