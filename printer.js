@@ -296,6 +296,7 @@ Printer.prototype.watch = function(interval) {
   lpq.stdout.on('data', function(data) {
     data = parseStdout(data);
     data.shift(2);
+    console.log(data);
     data = data.map(function(line) {
       line = line.split(/[ ]{2,}/);
       return {
