@@ -1,39 +1,44 @@
 node-printer-lp-complete
 ===============
 
-A tool to print document or data. Based on "lp" binary.
-
+A tool to print document or data. Based on "lp" binary.   
 Supports complete set of lp options (http://unixhelp.ed.ac.uk/CGI/man-cgi?lp)
 
-Based on Thomas Tourlourat armetiz/node-printer-lp, live long and prosper.
+Based on armetiz/node-printer-lp and diegoalberto/node-printer-lp-complete.
 
 ## Quick Examples
 
 ```js
-var printer = require ("node-printer-lp-complete");
+var Printer = require('node-printer-lp-complete');
 var options = {
-    media: 'Custom.200x600mm', // Custom paper size
-    destination: "EPSON_SX510", // The printer name
-    n: 3 // Number of copies
+    media: 'Custom.200x600mm',
+    n: 3
 };
 
-var text = "print text directly, when needed: e.g. barcode printers";
-var file = "package.json";
+// Get available printers list
+Printer.list();
 
-var jobText = printer.printText(text, options, "text_demo");
-var jobFile = printer.printFile(file, options, "file_demo");
+// Create a new Pinter from available devices
+var printer = new Printer('EPSON_SX510');
 
-var onJobEnd = function () {
-    console.log(this.identifier + ", job send to printer queue");
-};
+// Print from a buffer, file path or text
+var fileBuffer = fs.readFileSync('path/to/file');
+var jobBuffer = printer.printBuffer(fileBuffer);
 
-var onJobError = function (message) {
-    console.log(this.identifier + ", error: " + message);
-};
+var filePath = 'package.json';
+var jobFile = printer.printFile(filePath);
 
-jobText.on("end", onJobEnd);
-jobText.on("error", onJobError);
+var text = 'Print text directly, when needed: e.g. barcode printers'
+var jobText = printer.printText(text);
 
-jobFile.on("end", onJobEnd);
-jobFile.on("error", onJobError);
+// Cancel a job
+jobFile.cancel();
+
+// Listen events from job
+jobBuffer.once('sent', function() {
+    jobBuffer.on('completed', function() {
+        console.log('Job ' + jobBuffer.identifier + 'has been printed');
+        jobBuffer.removeAllListeners();
+    });
+});
 ```

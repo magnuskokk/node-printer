@@ -255,8 +255,8 @@ var buildArgs = function(options) {
     return argsFactory(options);
 };
 
-var parseStdout = function(buffer) {
-    return buffer.toString()
+var parseStdout = function(data) {
+    return data.toString()
         .replace(/\n$/, '')
         .split('\n');
 };
@@ -296,8 +296,8 @@ Printer.prototype.watch = function(interval) {
         data.shift(2);
         data = data.map(function(line) {
             line = line.split(/[ ]{2,}/);
-            return status = {
-                rank: (line[0] === 'active' ? line[0] : parseInt(line[0].slice(0, -2)),
+            return {
+                rank: (line[0] === 'active' ? line[0] : parseInt(line[0].slice(0, -2))),
                 owner: line[1],
                 identifier: parseInt(line[2]),
                 files: line[3],
