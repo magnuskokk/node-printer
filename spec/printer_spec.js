@@ -1,7 +1,6 @@
 // TODO: need false data from `lpq` and `lpstat` to create tests from travis ci
 
 var Printer = require('../printer.js');
-var spawnSync = require('child_process').spawnSync;
 
 describe('get list of installed printers', function() {
   var list = Printer.list();
