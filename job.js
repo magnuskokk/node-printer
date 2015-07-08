@@ -17,15 +17,15 @@ function Job(lp) {
     self.identifier = parseInt(data
       .toString()
       .match(/^request id is .*-(\d+)/)[1]);
-  });
 
-  lp.on('exit', function(code) {
-    if (0 === code) {
-      self.emit('sent');
-    }
-    else {
-      self.emit('error', error);
-    }
+    lp.on('exit', function(code) {
+      if (0 === code) {
+        self.emit('sent');
+      }
+      else {
+        self.emit('error', error);
+      }
+    });
   });
 }
 
