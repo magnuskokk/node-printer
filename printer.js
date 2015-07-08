@@ -350,6 +350,10 @@ Printer.prototype.printBuffer = function(data, options) {
     self.jobs.push(job);
   });
 
+  job.on('completed', function() {
+    self.jobs.splice(self.jobs.indexOf(job), 1);
+  });
+
   return job;
 };
 
@@ -365,6 +369,10 @@ Printer.prototype.printFile = function(filePath, options) {
   var job = new Job(lp);
   job.on('sent', function() {
     self.jobs.push(job);
+  });
+
+  job.on('completed', function() {
+    self.jobs.splice(self.jobs.indexOf(job), 1);
   });
 
   return job;
