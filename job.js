@@ -35,7 +35,7 @@ Job.prototype.update = function(status) {
 };
 
 Job.prototype.unqueue = function() {
-  if (this.status.rank === 'active') {
+  if (this.status && this.status.rank === 'active') {
     this.status.rank = 'completed';
     this.emit('completed');
   }

@@ -320,7 +320,7 @@ Printer.prototype.watch = function() {
 
       if (status) {
         job.update(status);
-      } else if (job.status) {
+      } else {
         job.unqueue();
       }
     });
