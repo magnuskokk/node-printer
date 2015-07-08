@@ -29,13 +29,9 @@ function Job(lp) {
   });
 }
 
-Job.prototype.setStatus = function(status) {
+Job.prototype.update = function(status) {
   this.status = status;
   this.emit('updated', status);
-};
-
-Job.prototype.getStatus = function() {
-  return this.status;
 };
 
 Job.prototype.unqueue = function() {

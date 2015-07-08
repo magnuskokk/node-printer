@@ -267,14 +267,13 @@ var parseStdout = function(data) {
 
 function Printer(name) {
   var self = this;
-  if (!Printer.match(name))
-    throw new TypeError(name + ' printer does not exist ; installed printers are ' + Printer.list());
+  if (!Printer.match(name)) {
+    console.error(
+      name + ' printer does not exist ; installed printers are ' + Printer.list()
+      );
+  }
   self.name = name;
   self.jobs = [];
-
-  self.on('watched', function() {
-    self.watch();
-  });
   self.watch();
 }
 
@@ -320,12 +319,15 @@ Printer.prototype.watch = function() {
       })[0];
 
       if (status) {
-        job.setStatus(status);
-      } else {
+        job.update(status);
+      } else if (job.status.rank === 'active') {
         job.unqueue();
       }
     });
-    self.emit('watched');
+  });
+
+  lpq.on('exit', function() {
+    self.watch();
   });
 };
 
@@ -363,7 +365,7 @@ Printer.prototype.printFile = function(filePath, options) {
   var job = new Job(lp);
   job.on('sent', function() {
     self.jobs.push(job);
-  })
+  });
 
   return job;
 };
