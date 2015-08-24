@@ -366,7 +366,7 @@ Printer.prototype.printFile = function(filePath, options) {
   args.push('-d', self.name);
 
   args.push('--');
-  args.push(file);
+  args.push(filePath);
 
   var lp = spawn('lp', args);
 
