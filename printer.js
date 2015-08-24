@@ -271,6 +271,7 @@ function Printer(name) {
     console.error(
       name + ' printer does not exist ; installed printers are ' + Printer.list()
       );
+    throw new Error('Printer ' + name + ' does not exist on your system.');
   }
   self.name = name;
   self.jobs = [];
@@ -340,6 +341,8 @@ Printer.prototype.findJob = function(jobId) {
 Printer.prototype.printBuffer = function(data, options) {
   var self = this;
   var args = buildArgs(options);
+  args.push('-d', self.name);
+
   var lp = spawn('lp', args);
 
   lp.stdin.write(data);
@@ -360,6 +363,7 @@ Printer.prototype.printBuffer = function(data, options) {
 Printer.prototype.printFile = function(filePath, options) {
   var self = this;
   var args = buildArgs(options);
+  args.push('-d', self.name);
 
   args.push('--');
   args.push(file);
