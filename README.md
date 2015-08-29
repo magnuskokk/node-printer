@@ -24,23 +24,23 @@ Printer.list();
 var printer = new Printer('EPSON_SX510');
 
 // Print from a buffer, file path or text
-var fileBuffer = fs.readFileSync('path/to/file');
-var jobBuffer = printer.printBuffer(fileBuffer);
+var fileBuffer = fs.readFileSync('/path/to/file.ext');
+var jobFromBuffer = printer.printBuffer(fileBuffer);
 
 var filePath = 'package.json';
-var jobFile = printer.printFile(filePath);
+var jobFromFile = printer.printFile(filePath);
 
 var text = 'Print text directly, when needed: e.g. barcode printers'
-var jobText = printer.printText(text);
+var jobFromText = printer.printText(text);
 
 // Cancel a job
-jobFile.cancel();
+jobFromFile.cancel();
 
 // Listen events from job
-jobBuffer.once('sent', function() {
-    jobBuffer.on('completed', function() {
-        console.log('Job ' + jobBuffer.identifier + 'has been printed');
-        jobBuffer.removeAllListeners();
+jobFromBuffer.once('sent', function() {
+    jobFromBuffer.on('completed', function() {
+        console.log('Job ' + jobFromBuffer.identifier + 'has been printed');
+        jobFromBuffer.removeAllListeners();
     });
 });
 ```
