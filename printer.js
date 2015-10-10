@@ -28,7 +28,8 @@ var spawnSync = function(command, args, opts){
       });
 
       ls.on('close', function (code) {
-        callback(res)
+        res.status = code;
+        callback(null, res)
       });
     });
   }
