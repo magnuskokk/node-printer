@@ -1,8 +1,6 @@
 node-printer
 ===============
 
-[![Code Climate](https://codeclimate.com/github/alepee/node-printer/badges/gpa.svg)](https://codeclimate.com/github/alepee/node-printer)
-
 A tool to print document or data. Based on "lp" binary.   
 Supports complete set of lp options (http://unixhelp.ed.ac.uk/CGI/man-cgi?lp)
 

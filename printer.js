@@ -12,28 +12,31 @@ var spawnSync = function(command, args, opts){
   function _spawn(callback){
     process.nextTick(function () {
       var ls = spawn(command, args, opts);
-      var res = "";
+      var res = {
+        output: [],
+        stdout: "",
+        stderr: ""
+      };
       var err = "";
       ls.stdout.on('data', function (data) {
-        res += data;
+        res.stdout += data;
+        res.output.push(data);
       });
 
       ls.stderr.on('data', function (data) {
-        err += data;
+        res.stderr += data;
+        res.output.push(data);
       });
 
       ls.on('close', function (code) {
-        callback(err, res)
+        callback(res)
       });
     });
   }
 
   var result = null;
   Sync(function () {
-
-    // Function.prototype.sync() interface is same as Function.prototype.call() - first argument is 'this' context
     result = _spawn.sync(null);
-    console.log(result); // 5
   });
   return result;
 
