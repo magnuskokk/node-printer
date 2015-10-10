@@ -17,7 +17,6 @@ var spawnSync = function(command, args, opts){
         stdout: "",
         stderr: ""
       };
-      var err = "";
       ls.stdout.on('data', function (data) {
         res.stdout += data;
         res.output.push(data);
@@ -37,7 +36,9 @@ var spawnSync = function(command, args, opts){
   var result = null;
   Sync(function () {
     result = _spawn.sync(null);
+    console.log("res1 = ", result)
   });
+  console.log("res2 = ", result)
   return result;
 
 }
