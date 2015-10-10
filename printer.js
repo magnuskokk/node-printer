@@ -1,10 +1,43 @@
 var Job = require ('./job');
 var spawn = require('child_process').spawn;
-var spawnSync = require('child_process').spawnSync;
+var Sync = require('sync');
 var _ = require ('underscore');
 var utils = require('util');
 var events = require('events');
 utils.inherits(Printer, events.EventEmitter);
+
+//workaround for node v0.10.x
+var spawnSync = function(command, args, opts){
+
+  function _spawn(callback){
+    process.nextTick(function () {
+      var ls = spawn(command, args, opts);
+      var res = "";
+      var err = "";
+      ls.stdout.on('data', function (data) {
+        res += data;
+      });
+
+      ls.stderr.on('data', function (data) {
+        err += data;
+      });
+
+      ls.on('close', function (code) {
+        callback(err, res)
+      });
+    });
+  }
+
+  var result = null;
+  Sync(function () {
+
+    // Function.prototype.sync() interface is same as Function.prototype.call() - first argument is 'this' context
+    result = _spawn.sync(null);
+    console.log(result); // 5
+  });
+  return result;
+
+}
 
 /**
  * Describes the parameter options accepted by lp

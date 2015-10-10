@@ -6,7 +6,7 @@ node-printer
 A tool to print document or data. Based on "lp" binary.   
 Supports complete set of lp options (http://unixhelp.ed.ac.uk/CGI/man-cgi?lp)
 
-Based on armetiz/node-printer-lp and diegoalberto/node-printer-lp-complete.
+Based on armetiz/node-printer-lp and diegoalberto/node-printer-lp-complete and alepee/node-printer.
 
 ## Quick Examples
 
