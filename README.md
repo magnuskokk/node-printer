@@ -1,7 +1,13 @@
-node-printer
+zuzel-printer
 ===============
 
 https://atmospherejs.com/zuzel/node-printer
+
+It is based on `node-printer` with bugfixes and support for node >= 0.10.x
+
+```bash
+npm install zuzel-printer
+```
 
 ```bash
 meteor add zuzel:node-printer
