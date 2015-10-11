@@ -47,7 +47,9 @@ jobFromBuffer.once('sent', function() {
 
 ## Options map
 
-Available options:
+Parameter options accepted by lp.
+If expects is blank '', no option value is required for the option.
+
 
 ```javascript
 'E': {
@@ -132,15 +134,100 @@ Available options:
 For example
 ```javascript
 var options = {
-    media: 'Custom.200x600mm',
-    n: 3,
+    q: 50,
     P: "2-3"
+};
+```
+
+
+Parameter options accepted by lp -o option
+if expects is blank '', no option value is required for the option
+This was written according to lp man page
+http://unixhelp.ed.ac.uk/CGI/man-cgi?lp
+ */
+```javascript
+    'media': {
+  		'options': ['media'],
+  		'description': 'Sets  the  page  size  to size. Most printers support at least the size names "a4", "letter", and "legal".',
+  		'expects': 'string',
+  		'default': 'a4'
+  	},
+  	'landscape': {
+  		'options': ['landscape'],
+  		'description': 'landscape',
+  		'expects': ''
+  	},
+  	'orientation-requested': {
+  		'options': ['orientation-requested'],
+  		'description': '',
+  		'expects': 'number'
+  	},
+  	'sides': {
+  		'options': ['sides'],
+  		'description': 'Prints on one or two sides of the  paper.  The  value  "two-sided-long-edge" is  normally  used  when printing portrait (unrotated) pages, while "two-sided-short-edge" is used for landscape pages.',
+  		'expects': 'string'
+  	},
+  	'fitplot': {
+  		'options': ['fitplot'],
+  		'description': 'Scales the print file to fit on the page',
+  		'expects': '',
+  		'default': false
+  	},
+  	'scaling': {
+  		'options': ['scaling'],
+  		'description': 'Scales image files to use up to number percent of the page. Values greater than 100 cause the image file to be printed across multiple pages',
+  		'expects': 'number'
+  	},
+  	'cpi': {
+  		'options': ['cpi'],
+  		'description': 'Sets the number of characters per inch to use when printing a text file. The default is 10',
+  		'default': 10,
+  		'expects': 'number'
+  	},
+  	'lpi': {
+  		'options': ['lpi'],
+  		'description': 'Sets  the  number  of  lines  per inch to use when printing a text file. The default is 6',
+  		'default': 6,
+  		'expects': 'number'
+  	},
+  	'page-bottom': {
+  		'options': ['page-bottom'],
+  		'description': 'Sets the page margins when printing text files. The values are in points - there are 72 points to the inch',
+  		'expects': 'number'
+  	},
+  	'page-left': {
+  		'options': ['page-left'],
+  		'description': 'Sets the page margins when printing text files. The values are in points - there are 72 points to the inch',
+  		'expects': 'number'
+  	},
+  	'page-right': {
+  		'options': ['page-right'],
+  		'description': 'Sets the page margins when printing text files. The values are in points - there are 72 points to the inch',
+  		'expects': 'number'
+  	},
+  	'page-top': {
+  		'options': ['page-top'],
+  		'description': 'Sets the page margins when printing text files. The values are in points - there are 72 points to the inch',
+  		'expects': 'number'
+  	}
+```
+
+For example
+```javascript
+var options = {
+    'page-right': 140,
+    'lpi': 9
+};
+```
+
+Optionally you can set this as a text value
+```javascript
+var options = {
+    'o': 'page-right=140 lpi=9'
 };
 ```
 
 ## Roadmap
 
-- [ ] Rewrite option factories
-- [ ] Remove dependency to underscorejs
 - [ ] Write more tests
 - [ ] Find a way to emulate CUPS printers on Travis env
