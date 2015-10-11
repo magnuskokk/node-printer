@@ -37,12 +37,17 @@ var jobFromFile = printer.printFile(filePath, options);
 jobFromFile.cancel();
 
 // Listen events from job
-jobFromBuffer.once('sent', function() {
-    jobFromBuffer.on('completed', function() {
-        console.log('Job ' + jobFromBuffer.identifier + 'has been printed');
-        jobFromBuffer.removeAllListeners();
-    });
+job.once('sent', function () {
+    console.log('Job ' + job.identifier + ' has been sent');
 });
+job.on('completed', function () {
+    console.log('Job ' + job.identifier + ' has been printed');
+    job.removeAllListeners();
+    printer.destroy();
+});
+
+//destroys all child processes
+printer.destroy()
 ```
 
 ## Options map

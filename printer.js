@@ -172,7 +172,7 @@ var oOptions = {
 
 
 var forIn = function (obj, callback) {
-	if(typeof obj !== "object"){
+	if (typeof obj !== "object") {
 		return;
 	}
 	var keys = Object.keys(obj);
@@ -226,7 +226,7 @@ var optionsFactory = function (options) {
 			}
 		});
 		if (typeof oOption.default !== 'undefined') { // if method options does not contains the value, use default
-		// if available
+			// if available
 			if (typeof selOOptions[oOptionId] === 'undefined') {
 				selOOptions[oOptionId] = oOption.default;
 			}
@@ -311,26 +311,37 @@ Printer.match = function (name) {
 	}).length);
 };
 
+Printer.prototype.destroy = function () {
+	var self = this;
+	self.lpq.removeAllListeners();
+	self.lpq.kill();
+	self.jobs.forEach(function(job){
+		job.removeAllListeners();
+	})
+}
+
 Printer.prototype.watch = function () {
 	var self = this;
 	var args = ['-P', this.name];
 
 	var lpq = spawn('lpq', args);
+	self.lpq = lpq;
 
 	lpq.stdout.on('data', function (data) {
 		data = parseStdout(data);
-		data.shift(2);
+		data.shift();
+		data.shift();
+
 		data = data.map(function (line) {
-			line = line.split(/[ ]{2,}/);
+			line = line.split(/ +/);
 			return {
 				rank: (line[0] === 'active' ? line[0] : parseInt(line[0].slice(0, -2))),
 				owner: line[1],
 				identifier: parseInt(line[2]),
 				files: line[3],
-				totalSize: line[4]
+				totalSize: parseInt(line[4])
 			};
 		});
-
 		self.jobs.map(function (job) {
 			var status = data.filter(function (status) {
 				if (status.identifier === job.identifier) return status;
@@ -362,8 +373,8 @@ Printer.prototype.printBuffer = function (data, options) {
 
 	var lp = spawn('lp', args);
 
-	lp.stdin.write(data);
-	lp.stdin.end();
+	lp.stdin.write(data)
+	lp.stdin.end()
 
 	var job = new Job(lp);
 	job.on('sent', function () {
