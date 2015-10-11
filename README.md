@@ -29,7 +29,7 @@ var filePath = 'package.json';
 var jobFromFile = printer.printFile(filePath);
 
 var text = 'Print text directly, when needed: e.g. barcode printers'
-var jobFromText = printer.printText(text);
+var jobFromText = printer.printBuffer(text);
 
 // Cancel a job
 jobFromFile.cancel();
