@@ -1,48 +1,12 @@
 var Job = require ('./job');
 var spawn = require('child_process').spawn;
+//workaround for node v0.10.x
+var spawnSync = require('sync-exec');
 var Sync = require('sync');
 var _ = require ('underscore');
 var utils = require('util');
 var events = require('events');
 utils.inherits(Printer, events.EventEmitter);
-
-//workaround for node v0.10.x
-var spawnSync = function(command, args, opts){
-
-  function _spawn(callback){
-    process.nextTick(function () {
-      var ls = spawn(command, args, opts);
-      var res = {
-        output: [],
-        stdout: "",
-        stderr: ""
-      };
-      ls.stdout.on('data', function (data) {
-        res.stdout += data;
-        res.output.push(data);
-      });
-
-      ls.stderr.on('data', function (data) {
-        res.stderr += data;
-        res.output.push(data);
-      });
-
-      ls.on('close', function (code) {
-        res.status = code;
-        callback(null, res)
-      });
-    });
-  }
-
-  var result = null;
-  Sync(function () {
-    result = _spawn.sync(null);
-    console.log("res1 = ", result)
-  });
-  console.log("res2 = ", result)
-  return result;
-
-}
 
 /**
  * Describes the parameter options accepted by lp
@@ -317,7 +281,7 @@ function Printer(name) {
 }
 
 Printer.list = function() {
-  return parseStdout(spawnSync('lpstat', ['-p']).stdout)
+  return parseStdout(spawnSync('lpstat -p').stdout)
     .filter(function(line) {
       return line.match(/^printer/);
     })
