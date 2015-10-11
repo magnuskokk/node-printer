@@ -1,6 +1,11 @@
 node-printer
 ===============
 
+https://atmospherejs.com/zuzel/node-printer
+
+```bash
+meteor add zuzel:node-printer
+
 A tool to print document or data. Based on "lp" binary.   
 Supports complete set of lp options (http://unixhelp.ed.ac.uk/CGI/man-cgi?lp)
 
