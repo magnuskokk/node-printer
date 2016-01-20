@@ -1,7 +1,7 @@
 zuzel-printer
 ===============
 
-https://atmospherejs.com/zuzel/node-printer
+<a href="https://atmospherejs.com/zuzel/node-printer">https://atmospherejs.com/zuzel/node-printer</a>
 
 It is based on `node-printer` with bugfixes and support for node >= 0.10.x
 
@@ -17,6 +17,8 @@ A tool to print document or data. Based on "lp" binary.
 Supports complete set of lp options (http://unixhelp.ed.ac.uk/CGI/man-cgi?lp)
 
 Based on armetiz/node-printer-lp and diegoalberto/node-printer-lp-complete and alepee/node-printer.
+
+## Supports Mac OS and Linux
 
 ## Quick Examples
 
