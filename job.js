@@ -44,7 +44,7 @@ Job.prototype.unqueue = function() {
 Job.prototype.cancel = function() {
   var self = this;
   var lprm = spawn('lprm', [self.identifier]);
-  lprm.on('exit', function(code) {
+  lprm.on('close', function(code) {
     if (0 === code) self.emit('deleted');
   });
 };
